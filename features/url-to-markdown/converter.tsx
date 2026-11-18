@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   ArrowUpRightIcon,
   CircleAlertIcon,
@@ -53,6 +53,7 @@ export function Converter() {
   const [selected, setSelected] = useState<string | null>(null);
   const [customPrompt, setCustomPrompt] = useState("");
   const [copied, setCopied] = useState(false);
+  const requestId = useRef(0);
 
   const loading = status.kind === "loading";
 
@@ -69,6 +70,7 @@ export function Converter() {
       return;
     }
     setUrlError(false);
+    const id = ++requestId.current;
     setStatus({ kind: "loading" });
     try {
       const res = await fetch("/api/convert", {
@@ -77,10 +79,12 @@ export function Converter() {
         body: JSON.stringify({ url: target }),
       });
       const data = await res.json();
+      if (id !== requestId.current) return;
       if (!res.ok) throw new Error(data.error);
       resetPrompt();
       setStatus({ kind: "result", page: { url: target, ...data } });
     } catch (err) {
+      if (id !== requestId.current) return;
       setStatus({
         kind: "error",
         message:
@@ -91,6 +95,7 @@ export function Converter() {
   }
 
   function clearAll() {
+    requestId.current++;
     setUrl("");
     setUrlError(false);
     setStatus({ kind: "empty" });
