@@ -1,3 +1,4 @@
+import { AuthNav } from "@/features/auth/auth-nav";
 import { Converter } from "@/features/url-to-markdown/converter";
 import { ThemeToggle } from "@/features/url-to-markdown/theme-toggle";
 
@@ -11,7 +12,10 @@ export default function Home() {
           </span>
           feedme
         </div>
-        <ThemeToggle />
+        <div className="flex items-center gap-2">
+          <AuthNav />
+          <ThemeToggle />
+        </div>
       </header>
       <div>
         <h1 className="mb-1.5 text-2xl font-semibold tracking-tight max-sm:text-xl">

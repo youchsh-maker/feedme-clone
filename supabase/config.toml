@@ -1,0 +1,9 @@
+# Minimal config: only the hosted settings this app depends on.
+# Push with `supabase config push`; undeclared properties are left unchanged.
+project_id = "feedme-clone"
+
+[auth]
+site_url = "http://localhost:3000"
+
+[auth.email]
+enable_confirmations = false
